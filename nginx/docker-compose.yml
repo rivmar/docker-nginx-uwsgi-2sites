@@ -1,0 +1,40 @@
+version: '3'
+services:
+    nginx:
+        container_name: nginx
+        build: .
+        restart: always
+        ports:
+        - "80:80"
+        - "8000:8000"
+        volumes:        
+        #- /var/:/var/
+        - ./log:/var/log/nginx 
+        #external_links:
+        #- app1_web_1:site1 
+        #- app2_web_1:site2  
+        #command: ["bash", "/start.sh" ]        
+         
+
+    db:
+      container_name: postgres
+      image: postgres:latest
+      environment:
+        - POSTGRES_USER=pguser
+        - USE_DOCKER=yes
+      volumes:
+        - pgdata:/var/lib/postgresql/data/
+      external_links:
+        - app1_web_1:site1 
+        - app2_web_1:site2 
+
+    mailhog:
+      image: mailhog/mailhog:v1.0.0
+      ports:
+        - "8025:8025"
+
+    redis:
+      image: redis:3.0
+
+volumes:
+    pgdata:

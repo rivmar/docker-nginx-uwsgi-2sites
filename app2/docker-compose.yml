@@ -1,0 +1,17 @@
+version: '3'
+services:        
+    web: &django
+        build:
+          context: .
+          dockerfile: ./Dockerfile
+       # restart: always
+        ports:
+        - "8002:8001"
+        volumes:
+        - .:/app1
+        external_links:
+        - nginx
+        - postgres
+        - nginx_mailhog_1
+        - nginx_redis_1
+        command: ["bash", "/start.sh" ]
